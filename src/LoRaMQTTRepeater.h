@@ -19,9 +19,8 @@
 
 #define VERSION "0.1"
 
-
 #include "LoRa.h"
-
+#include "SensorBMP280.h"
 
 #define WIFI_SSID     ""
 #define WIFI_PASSWORD ""
@@ -30,13 +29,13 @@
 #define SERIAL_BAUD 115200
 
 /// Arduino OTA configuration
-#define OTA_HOSTNAME ""
-#define OTA_PASSWORD ""
+#define OTA_HOSTNAME "LORA"
+#define OTA_PASSWORD "OTA_PASSWORD"
 
 /// MQTT configuration
 #define MQTT_SERVER "10.5.1.5"
-#define MQTT_PORT     1883
-#define MQTT_ROOT "Peizerweg217/"
+#define MQTT_PORT   1883
+#define MQTT_ROOT   "Peizerweg217/"
 
 #define MQTT_GATEWAY_NAME "LoRaRepeater/"
 #define MQTT_WILL_TOPIC MQTT_ROOT MQTT_GATEWAY_NAME "LWT"

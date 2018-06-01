@@ -28,15 +28,13 @@
 
 #include "LoRaMQTTRepeater.h"
 
-/* int  sensor_value; */
-/* boolean state = false;  // state == 1 -> sensor == high */
-/* unsigned long count = 0; */
-
 /* WiFiUDP ntpUDP; */
 /* NTPClient timeClient(ntpUDP, NTP_HOST, NTP_OFFSET, NTP_UPDATE_INTERVAL); */
 
 WiFiClient eClient;
 PubSubClient pubsubClient(MQTT_SERVER, MQTT_PORT, NULL, eClient);
+
+SensorBMP280 myBMP280;
 
 void setup_wifi() {
   //  WiFi.mode(WIFI_STA);
@@ -85,13 +83,14 @@ void setup() {
   Serial.begin(SERIAL_BAUD);
   //  pinMode(sensorPin, INPUT);
 #ifdef DEBUG
-  Serial.println("kWh meter initializing");
+  Serial.println("LORA repeater initializing");
 #endif
   delay(1500);
-
   setup_wifi();
   setup_OTA();
   delay(1500);
+
+  myBMP280.init();
 }
 
 boolean reconnect_mqtt() {
@@ -116,14 +115,12 @@ boolean reconnect_mqtt() {
 }
 
 void loop() {
-  setup();
-
-  for (;;) {
     // house-keeping - MQTT, NTP and ArduinoOTA
     if (!pubsubClient.connected()) {
       reconnect_mqtt() ;
     }
-    pubsubClient.loop();       // MQTT
+    pubsubClient.loop(); // MQTT
     ArduinoOTA.handle(); // OTA
-  }
+  
+    myBMP280.measure(); 
 }
